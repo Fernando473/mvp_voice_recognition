@@ -65,8 +65,14 @@ def upload_audio(request):
                 return JsonResponse({'success': True, 'transcription': text})
             except Exception as e:
                 print(f"Error en la transcripción: {e}")
+
                 return JsonResponse({'success': False, 'error': str(e)})
         else:
+            wc = WhisperClient()
+
+            # Realiza la transcripción y devuelve el texto
+            text = wc.transcribe_audio("audio_2023062")
+            print("Texto generad0,", text)
             return JsonResponse({'success': False, 'error': 'Archivo de audio no recibido en la solicitud'})
     else:
         return JsonResponse({'success': False, 'error': 'Método de solicitud no válido'})
