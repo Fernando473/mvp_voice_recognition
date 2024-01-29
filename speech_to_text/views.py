@@ -1,9 +1,8 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 
-from speech_to_text.services.whisper_client import WhisperClient
 from django.shortcuts import render, redirect
-from .forms.audio_file_form import AudioFileForm
+from .services.whisper_client import WhisperClient
 
 
 # Create your views here.
@@ -12,10 +11,6 @@ class SpeechToTextView(APIView):
     def post(self, request):
         whisper_client = WhisperClient()
 
-
-from django.shortcuts import render, redirect
-from .services.whisper_client import WhisperClient
-from .models import AudioFile
 
 # def upload_audio(request):
 #     if request.method == 'POST':
