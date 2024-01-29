@@ -2,7 +2,7 @@ asgiref==3.7.2
 certifi==2023.11.17
 charset-normalizer==3.3.2
 colorama==0.4.6
-Django==5.0.1
+Django
 djangorestframework==3.14.0
 filelock==3.13.1
 fsspec==2023.12.2
