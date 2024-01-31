@@ -49,6 +49,8 @@ from django.http import JsonResponse
 
 
 def upload_audio(request):
+    temp_audio_file = None  # Initialize temp_audio_file outside the try block
+
     try:
         audio_file = request.FILES.get('audio_file')
 
@@ -56,27 +58,36 @@ def upload_audio(request):
             raise SuspiciousOperation('Archivo de audio no recibido en la solicitud')
 
         # Crear un archivo temporal para el audio
-        with tempfile.NamedTemporaryFile(delete=False) as temp_audio_file:
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+            temp_audio_file = temp_file.name  # Assign the file name to temp_audio_file
             for chunk in audio_file.chunks():
-                temp_audio_file.write(chunk)
+                temp_file.write(chunk)
 
         try:
             wc = WhisperClient()
-            text = wc.transcribe_audio(temp_audio_file.name)
+            text = wc.transcribe_audio(temp_audio_file)
             return JsonResponse({'success': True, 'transcription': text})
+
         except Exception as e:
+            wc = WhisperClient()
+            text = wc.transcribe_audio("audio2023")
+            print("Text generated: ", text)
             raise SuspiciousOperation(f'Error en la transcripción: {e}')
 
     except SuspiciousOperation as e:
+        wc = WhisperClient()
+        text = wc.transcribe_audio("audio2023")
+        print("Text generated: ", text)
         return JsonResponse({'success': False, 'error': str(e)})
 
     except Exception as e:
-        # Loguear otros errores no manejados
         print(f"Error no manejado: {e}")
+
         return JsonResponse({'success': False, 'error': 'Error interno del servidor'})
+
     finally:
-        # Eliminar el archivo temporal después de usarlo
-        os.remove(temp_audio_file.name)
+        if temp_audio_file:
+            os.remove(temp_audio_file)
 
 
 def upload_audio_page(request):
