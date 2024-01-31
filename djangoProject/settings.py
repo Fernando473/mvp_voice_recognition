@@ -25,6 +25,11 @@ SECRET_KEY = 'django-insecure-)fg!bk92hes%sy7d85990c#7^slvhjo=y_4p=z1se5_g1s)k)=
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+CORS_ALLOWED_ORIGINS = [
+    "https://mvpvoicerecognition-production.up.railway.app",
+    "http://127.0.0.1:8000"
+    # Add any other allowed origins if needed
+]
 
 # Application definition
 
@@ -35,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'speech_to_text'
 ]
@@ -47,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'djangoProject.urls'
